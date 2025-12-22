@@ -1,0 +1,7 @@
+data_root: /path_to_repo/sparsh/shared/
+encoder_checkpoint_root: /path_to_repo/sparsh/shared/sparsh_models
+log_dir: /path_to_repo/sparsh/shared/experiments/
+tacbench_dir: /path_to_repo/sparsh/shared/tacbench/
+
+output_dir: ${hydra:runtime.output_dir}
+work_dir: ${hydra:runtime.cwd}
