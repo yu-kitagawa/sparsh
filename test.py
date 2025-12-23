@@ -4,11 +4,18 @@ import torch
 from tactile_ssl.downstream_task.attentive_pooler import AttentivePooler
 from tactile_ssl.model.vision_transformer import vit_base
 
+encoder_type = "dino"  # mae, dino, dinov2, ijepa
+
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 model = vit_base(in_chans=6, pos_embed_fn="sinusoidal", num_register_tokens=1)
-checkpoint = torch.load("./checkpoint/dino_vitbase.ckpt")
-encoder_key = "teacher_encoder.backbone"
+checkpoint = torch.load(f"./checkpoint/{encoder_type}_vitbase.ckpt")
+if "jepa" in encoder_type:
+    encoder_key = "target_encoder"
+elif "dino" in encoder_type:
+    encoder_key = "teacher_encoder.backbone"
+else:
+    encoder_key = "encoder"
 target_keys = [key for key in checkpoint["model"].keys() if encoder_key in key]
 if "backbone" in target_keys[0] and "backbone" not in encoder_key:
     encoder_key = encoder_key + ".backbone"
